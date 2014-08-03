@@ -1,4 +1,5 @@
 package Test::Skeleton::Generator;
+
 use 5.001000;
 use strict;
 use warnings;
@@ -14,6 +15,31 @@ use File::Path qw/ make_path /;
 
 my $DEBUG = 0;
 
+=head1 NAME
+
+Test::Skeleton::Generator - 
+
+=head1 SYNOPSIS
+
+    perl -MTest::Skeleton::Generator -e 'Test::Skeleton::Generator->new->make'
+
+=head1 DESCRIPTION
+
+Test::Skeleton::Generator is ...
+
+=head1 LICENSE
+
+Copyright (C) Manni Heumann.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Manni Heumann E<lt>github@lxxi.orgE<gt>
+
+=cut
+
 
 sub new {
     my $class   = shift;
@@ -25,32 +51,39 @@ sub new {
         skip_private_methods => 0,
     }, $class;
 
-    foreach my $key ( keys %$self ) {
-        $self->{ $key } = $options->{ $key } if exists $options->{ $key };
-    };
-
-    return $self;
+    if ( $options ) {
+        foreach my $key ( keys %$self ) {
+            $self->{ $key } = $options->{ $key } if exists $options->{ $key };
+        };
+        return $self;
+    }
+    elsif ( @ARGV == 2 ) {
+        $self->{ package_file } = $ARGV[ 0 ];
+        $self->{ test_file    } = $ARGV[ 1 ];
+        $self->make;
+    }
+    else {
+        die 'You need to provide the name of the package and the path to the test file.';
+    }
 }
 
-sub main {
+sub make {
     my $self = shift;
 
-    debug( "package_file: $self->{ package_file } - test_file: $self->{ test_file }" );
+    my $existing_test_subs = $self->analyze_t_file;
+    my $package            = $self->get_package_name;
+    my $functions          = $self->get_package_functions( $package, $existing_test_subs );
 
-    my $existing_test_subs = analyze_t_file( $self->{ test_file } );
-    my $package            = get_package_name( $self->{ package_file } );
-    debug( "Trying to use package $package." );
-    my @functions = get_package_functions( $package, $existing_test_subs );
-    prepare_test_file_path( $self->{ test_file } ) unless -e $self->{ test_file };
+    $self->prepare_test_file_path unless -e $self->{ test_file };
 
-    my $tmpl = prepare_template( $package, \@functions );
+    my $tmpl = $self->prepare_template( $package, $functions );
     $tmpl->param( update => %$existing_test_subs ? 1 : 0 );
 
     if ( -e $self->{ test_file } ) {
-        update_test_file( $self->{ test_file }, $tmpl, \@functions );
+        $self->update_test_file( $tmpl, $functions );
     }
     else {
-        make_test_file( $self->{ test_file }, $tmpl->output );
+        $self->make_test_file( $tmpl->output );
     }
 }
 
@@ -72,7 +105,7 @@ sub update_test_file {
     $t_content =~ s/^done_testing/$missing_calls\ndone_testing/ms;
     $t_content .= $tmpl->output;
 
-    make_test_file( $t_content );
+    $self->make_test_file( $t_content );
 }
 
 sub make_test_file {
@@ -81,9 +114,11 @@ sub make_test_file {
 
     open my $fh, '>', $self->{ test_file };
     print $fh $content;
+    close $fh;
 }
 
 sub prepare_template {
+    my $self      = shift;
     my $package   = shift;
     my $functions = shift;
 
@@ -103,37 +138,40 @@ sub prepare_test_file_path {
     my $self = shift;
 
     my $dir = dirname( $self->{ test_file } );
-    debug( "dirname of $self->{ test_file } is $dir." );
+    _debug( "dirname of $self->{ test_file } is $dir." );
 
     unless ( -d $dir ) {
-        debug( "Making path $dir" );
+        _debug( "Making path $dir" );
         make_path( $dir );
     }
 }
 
 sub get_package_functions {
+    my $self               = shift;
     my $package            = shift;
     my $existing_test_subs = shift;
 
+    _debug( "Trying to use package $package." );
     eval "use $package";
     if ( my $err = $@ ) {
-        die $err;
+        die "could not 'use' package $package: $err";
     }
 
-    my $functions = Class::Inspector->function_refs( $package );
-    my @functions;
-    foreach my $function ( @$functions ) {
+    my $wanted_subs = [];
+    my $found_subs  = Class::Inspector->function_refs( $package );
+    foreach my $function ( @$found_subs ) {
         my $info = inspect( $function );
         my $name = $info->name;
-        next if $name =~ /^[[:upper:]_]+$/;
+        next if $name =~ m/^[[:upper:]_]+$/;
+        next if $name =~ m/^_/ && $self->{ skip_private_methods };
         next if $info->package ne $package;
 
         if ( ! $existing_test_subs->{ "test_$name" } ) {
-            push @functions, { function => $name };
+            push @$wanted_subs, { function => $name };
         }
     }
 
-    return @functions;
+    return $wanted_subs;
 }
 
 sub get_package_name {
@@ -141,8 +179,8 @@ sub get_package_name {
 
     my $package = $self->{ package_file };
     if ( $package =~ m#/# ) {
-        debug( 'Package provided by file path' );
-        open my $fh, '<', $self->{ package_file } or exit_helpfully();
+        _debug( 'Package provided by file path' );
+        open my $fh, '<', $self->{ package_file };
         while ( my $ln = <$fh> ) {
             if ( $ln =~ m/^package (.+);\s*$/ ) {
                 $package = $1;
@@ -150,12 +188,12 @@ sub get_package_name {
             }
         }
     }
-    debug( 'package name is ' . $package );
+    _debug( 'package name is ' . $package );
 
     return $package;
 }
 
-sub debug {
+sub _debug {
     return unless $DEBUG;
     my @msgs = @_;
     foreach ( @msgs ) {
@@ -181,13 +219,8 @@ sub analyze_t_file {
     return $subs;
 }
 
-sub exit_helpfully {
-    print "Bitte auf der Kommandozeile den Pfad zur zu testenden Modul-Datei\n";
-    print "und den Pfad zur Test-Datei angeben\n";
-    exit 1;
-}
-
 1;
+
 __DATA__
 <tmpl_unless update>use Test::Most;
 BEGIN {
@@ -216,34 +249,3 @@ sub test_<tmpl_var function> {
     my $obj = get_object;
 }
 </tmpl_loop>
-
-
-__END__
-
-=encoding utf-8
-
-=head1 NAME
-
-Test::Skeleton::Generator - It's new $module
-
-=head1 SYNOPSIS
-
-    use Test::Skeleton::Generator;
-
-=head1 DESCRIPTION
-
-Test::Skeleton::Generator is ...
-
-=head1 LICENSE
-
-Copyright (C) Manni Heumann.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 AUTHOR
-
-Manni Heumann E<lt>github@lxxi.orgE<gt>
-
-=cut
-
