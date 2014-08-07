@@ -1,0 +1,29 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Test::Skeleton::Generator;
+use Getopt::Long;
+
+my ( $t, $p, $s, $d );
+
+if (
+    GetOptions(
+        'test-file=s'           => \$t,
+        'package=s'             => \$p,
+        'skip-private-methods!' => \$s,
+        'debug!'                => \$d,
+    )
+  )
+{
+    my $gen = Test::Skeleton::Generator->new( {
+            test_file            => $t,
+            package_file         => $p,
+            skip_private_methods => $s,
+            debug                => $d,
+        }
+    );
+    my $test = $gen->get_test;
+    $gen->write_test_file( $test );
+}
+
