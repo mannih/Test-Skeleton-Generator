@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Create a skeleton for a test file based on an existing module",
    "author" : [
       "Manni Heumann <github@lxxi.org>"
    ],
@@ -42,6 +42,12 @@
       },
       "runtime" : {
          "requires" : {
+            "Class::Inspector" : "0",
+            "File::Basename" : "0",
+            "File::Path" : "0",
+            "Getopt::Long" : "0",
+            "HTML::Template" : "0",
+            "Sub::Information" : "0",
             "perl" : "5.008001"
          }
       },
@@ -52,6 +58,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/mannih/Test-Skeleton-Generator/issues"
+      },
+      "homepage" : "https://github.com/mannih/Test-Skeleton-Generator",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/mannih/Test-Skeleton-Generator.git",
+         "web" : "https://github.com/mannih/Test-Skeleton-Generator"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:MANNI"
 }
