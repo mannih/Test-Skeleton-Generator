@@ -20,17 +20,17 @@ Or maybe:
 # DESCRIPTION
 
 Test::Skeleton::Generator is supposed to be used from within your editor to quickly
-generate skeletons/stubs for a test file that is supposed to test the module you
-are currently working on.
+generate skeletons/stubs for a test file that is will test the module you are
+currently working on.
 
-So suppose you are working on the file ./lib/Foo/Bar.pm which hasn't got any tests
-yet, you simply press a keyboard shortcut or click an icon (if you really have to)
-and now your editor would simply call perl like in the SYNOPSIS to generate a .t file
+So suppose you are working on the file `./lib/Foo/Bar.pm` which hasn't got any tests
+yet. Now you simply press a keyboard shortcut or click an icon (if you really have to)
+and your editor will simply call perl like in the SYNOPSIS above to generate a .t file
 in your ./t/ directory. You don't have to write the boiler-plate code yourself.
 
 There are two ways to use this module:
 
-The simplest way to use this module, is from the command line. Simply use it, call new,
+The simplest way to use this module is from the command line. Simply use it, call new,
 and provide two command line arguments: the path to the module you want to test
 and the path to the test file you'd like to create.
 

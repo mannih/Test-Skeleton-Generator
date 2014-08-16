@@ -47,6 +47,7 @@
             "File::Path" : "0",
             "Getopt::Long" : "0",
             "HTML::Template" : "0",
+            "Pod::Usage" : "0",
             "Sub::Information" : "0",
             "perl" : "5.008001"
          }
