@@ -88,6 +88,9 @@ Ignore methods/functions in your perl package that start with an underscore.
 
 L<Test::Skeleton::Generator> - the perl module that powers this script
 
+L<https://github.com/mannih/vim-perl-testing> is a vim plugin that was created
+to be used with something like generate_perl_test_skeleton.
+
 =head1 LICENSE
 
 Copyright (C) Manni Heumann.
