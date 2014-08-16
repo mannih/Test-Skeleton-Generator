@@ -6,6 +6,7 @@ requires 'Sub::Information';
 requires 'File::Basename';
 requires 'File::Path';
 requires 'Getopt::Long';
+requires 'Pod::Usage';
 
 on 'test' => sub {
     requires 'Test::More', '0.98';
