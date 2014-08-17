@@ -1,6 +1,8 @@
 Revision history of Test::Skeleton::Generator
 
 {{$NEXT}}
+
+0.03 2014-08-17T09:33:34Z
     - Write tests, tests, tests
 
 0.02 2014-08-16T22:00:30Z

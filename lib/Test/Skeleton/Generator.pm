@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use autodie ':all';
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 use HTML::Template;
 use Class::Inspector;

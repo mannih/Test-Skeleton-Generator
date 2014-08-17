@@ -8,11 +8,7 @@ simply
 
     generate_perl_test_skeleton -p ./lib/Module.pm -t t/test.t
 
-or
-
-    perl -MTest::Skeleton::Generator -e 'Test::Skeleton::Generator->new' ./lib/Module.pm ./t/test.t
-
-Or maybe:
+Or from another script/module:
 
     use Test::Skeleton::Generator;
     my $generator = Test::Skeleton::Generator->new( {
