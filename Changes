@@ -1,6 +1,7 @@
-Revision history for Perl extension Test-Skeleton-Generator
+Revision history of Test::Skeleton::Generator
 
 {{$NEXT}}
+    - Write tests, tests, tests
 
 0.02 2014-08-16T22:00:30Z
     - add more documentation

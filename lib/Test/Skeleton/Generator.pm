@@ -25,11 +25,7 @@ simply
 
  generate_perl_test_skeleton -p ./lib/Module.pm -t t/test.t
 
-or
-
- perl -MTest::Skeleton::Generator -e 'Test::Skeleton::Generator->new' ./lib/Module.pm ./t/test.t
-
-Or maybe:
+Or from another script/module:
 
  use Test::Skeleton::Generator;
  my $generator = Test::Skeleton::Generator->new( {
@@ -129,12 +125,6 @@ sub new {
         };
         $debug = 1 if $self->{ debug };
         return $self;
-    }
-    elsif ( @ARGV == 2 ) {
-        $self->{ package_file } = $ARGV[ 0 ];
-        $self->{ test_file    } = $ARGV[ 1 ];
-        my $test = $self->get_test;
-        $self->write_test_file( $test );
     }
     else {
         die 'You need to provide the name of the package and the path to the test file.';
@@ -283,7 +273,7 @@ sub analyze_t_file {
     open my $fh, '<', $self->{ test_file };
     my $subs = {};
     while ( my $ln = <$fh> ) {
-        if ( $ln =~ m/\bsub\s+(\w+)/ ) {
+        if ( $ln =~ m/^\bsub\s+(\w+)/ ) {
             $subs->{ $1 } = 1;
         }
     }
