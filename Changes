@@ -1,6 +1,7 @@
 Revision history of Test::Skeleton::Generator
 
 {{$NEXT}}
+    - Test::Most isn't spelled Test::More. Updated the cpanfile
 
 0.03 2014-08-17T09:33:34Z
     - Write tests, tests, tests
