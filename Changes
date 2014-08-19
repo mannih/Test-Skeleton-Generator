@@ -1,6 +1,8 @@
 Revision history of Test::Skeleton::Generator
 
 {{$NEXT}}
+
+0.05 2014-08-19T07:46:14Z
     - Include 'autodie' in cpanfile
 
 0.04 2014-08-18T07:38:36Z

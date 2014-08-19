@@ -4,7 +4,7 @@
       "Manni Heumann <github@lxxi.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.140640",
+   "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.142060",
    "license" : [
       "perl_5"
    ],
@@ -49,6 +49,7 @@
             "HTML::Template" : "0",
             "Pod::Usage" : "0",
             "Sub::Information" : "0",
+            "autodie" : "0",
             "perl" : "5.008001"
          }
       },
@@ -61,15 +62,15 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/mannih/Test-Skeleton-Generator/issues"
+         "web" : "https://git@github.com/mannih/Test-Skeleton-Generator/issues"
       },
-      "homepage" : "https://github.com/mannih/Test-Skeleton-Generator",
+      "homepage" : "https://git@github.com/mannih/Test-Skeleton-Generator",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/mannih/Test-Skeleton-Generator.git",
-         "web" : "https://github.com/mannih/Test-Skeleton-Generator"
+         "url" : "git://git@github.com/mannih/Test-Skeleton-Generator.git",
+         "web" : "https://git@github.com/mannih/Test-Skeleton-Generator"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_authority" : "cpan:MANNI"
 }
