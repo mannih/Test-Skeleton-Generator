@@ -1,6 +1,7 @@
 Revision history of Test::Skeleton::Generator
 
 {{$NEXT}}
+    - Include 'autodie' in cpanfile
 
 0.04 2014-08-18T07:38:36Z
     - Test::Most isn't spelled Test::More. Updated the cpanfile
