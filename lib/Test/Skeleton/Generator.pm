@@ -3,7 +3,7 @@ package Test::Skeleton::Generator;
 use 5.001000;
 use strict;
 use warnings;
-use autodie ':all';
+use autodie;
 
 our $VERSION = "0.05";
 

@@ -1,6 +1,7 @@
 Revision history of Test::Skeleton::Generator
 
 {{$NEXT}}
+    - Use autodie in a way the hopefully fixes all the test failures
 
 0.05 2014-08-19T07:46:14Z
     - Include 'autodie' in cpanfile
